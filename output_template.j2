@@ -1,0 +1,32 @@
+---------------------
+
+Hostname: {{ inventory_hostname }}
+OS Version: {{ ansible_net_version }}
+
+---------------------
+Interface Status/Descriptions
+--
+{% for interface, info in napalm_facts["ansible_facts"]["napalm_interfaces"].items() %}
+Interface: {{ interface }}
+    Up Status: {{ info["is_up"] }}
+    Description: {{ info["description"] }}
+    IP Address: Still working on it
+--
+{% endfor %}
+
+BGP Neighbor Information
+------------------------
+{% for neighbor in napalm_facts["ansible_facts"]["napalm_bgp_neighbors_detail"]["global"].items() %}
+{# neighbor seems to display a list [asn, [list{dict of all the gathered info}]], that is why the indexes are hard set #}
+ Neighbor IP: {{ neighbor[1][0]['remote_address'] }}
+ Up Status: {{ neighbor[1][0]['up'] }}
+ VRF: {{ neighbor[1][0]['routing_table'] }}
+ Prefix Propagation Information
+    Received Prefix Count: {{ neighbor[1][0]['received_prefix_count'] }}
+    Advertised Prefix Count: {{ neighbor[1][0]['advertised_prefix_count'] }}
+------------------------         
+{% endfor %}
+
+
+
+

@@ -1,0 +1,29 @@
+---
+# Python Napalm module, ansible-napalm module required to run this playbook
+  - name: Gather initial troubleshooting info
+    hosts: all
+    gather_facts: true
+    connection: network_cli
+
+    tasks:
+
+    - name: Using the ansible-napalm module to gather structured facts from device
+      napalm_get_facts:
+        hostname={{ ansible_host }}
+        username={{ ansible_user }}
+        # Password passed via ansible vault
+        password={{ ios_password }}
+        # Need to assign os via variable
+        dev_os="ios"
+        filter="facts,interfaces,bgp_neighbors_detail"
+      register: napalm_facts
+  
+  #This task can be used when it is desired to display output during the play
+    - name: Displaying all facts gathered from device
+      debug:
+        var: ansible_facts
+  
+    - name: Creating templatized output of useful device info
+      template:
+        src: "./output_template.j2"
+        dest: "./outputs/troubelshooting_{{ inventory_hostname }}.txt"
