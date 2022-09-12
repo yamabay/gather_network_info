@@ -11,9 +11,7 @@
       napalm_get_facts:
         hostname={{ ansible_host }}
         username={{ ansible_user }}
-        # Password passed via ansible vault
         password={{ ios_password }}
-        # Need to assign os via variable
         dev_os="ios"
         filter="facts,interfaces,bgp_neighbors_detail"
       register: napalm_facts
@@ -26,4 +24,4 @@
     - name: Creating templatized output of useful device info
       template:
         src: "./output_template.j2"
-        dest: "./outputs/troubelshooting_{{ inventory_hostname }}.txt"
+        dest: "network_troubleshoot/outputs/troubelshooting_{{ inventory_hostname }}.txt"
