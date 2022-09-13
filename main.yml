@@ -12,15 +12,15 @@
         hostname={{ ansible_host }}
         username={{ ansible_user }}
         password={{ ios_password }}
-        dev_os="ios"
-        filter="facts,interfaces,bgp_neighbors_detail"
+        dev_os={{ ansible_network_os }}
+        filter="facts,interfaces,bgp_neighbors_detail,interfaces_ip"
       register: napalm_facts
   
   #This task can be used when it is desired to display output during the play
     - name: Displaying all facts gathered from device
       debug:
         var: ansible_facts
-  
+
     - name: Creating templatized output of useful device info
       template:
         src: "./output_template.j2"

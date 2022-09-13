@@ -2,6 +2,7 @@
 
 Hostname: {{ inventory_hostname }}
 OS Version: {{ ansible_net_version }}
+Device Uptime: {{ napalm_uptime / 60}} minutes
 
 ---------------------
 Interface Status/Descriptions
@@ -10,7 +11,6 @@ Interface Status/Descriptions
 Interface: {{ interface }}
     Up Status: {{ info["is_up"] }}
     Description: {{ info["description"] }}
-    IP Address: Still working on it
 --
 {% endfor %}
 
@@ -26,7 +26,3 @@ BGP Neighbor Information
     Advertised Prefix Count: {{ neighbor[1][0]['advertised_prefix_count'] }}
 ------------------------         
 {% endfor %}
-
-
-
-
